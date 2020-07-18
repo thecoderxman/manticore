@@ -117,6 +117,8 @@ class ManticoreEVM(ManticoreBase):
             m.finalize()
     """
 
+    _published_events = {"solve"}
+
     def make_symbolic_buffer(self, size, name=None, avoid_collisions=False):
         """ Creates a symbolic buffer of size bytes to be used in transactions.
             You can operate on it normally and add constraints to manticore.constraints
