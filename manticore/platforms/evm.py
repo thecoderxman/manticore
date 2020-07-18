@@ -2493,7 +2493,7 @@ class EVMWorld(Platform):
 
             return result[0]
         except Exception as e:
-            logger.info("Error! %r", e)
+            logger.error("Error in symbolic function: %r", e)
             self._publish("will_solve", self.constraints, data, "get_value")
             data_c = SelectedSolver.instance().get_value(self.constraints, data)
             self._publish("did_solve", self.constraints, data, "get_value", data_c)
