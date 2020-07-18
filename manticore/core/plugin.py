@@ -492,25 +492,31 @@ class IntrospectionAPIPlugin(Plugin):
             )
 
     def will_solve_callback(self, state, constraints, expr, solv_func):
-        with self.locked_context("manticore_state", dict) as context:
-            if state.id not in context:
-                logger.warning(
-                    "Caught will_solve in state %s, but failed to capture its initialization",
-                    state.id,
-                )
-            desc = context.setdefault(state.id, StateDescriptor(state_id=state.id))
-            desc._old_status = desc.status
-            desc.status = StateStatus.waiting_for_solver
+        try:
+            with self.locked_context("manticore_state", dict) as context:
+                if state.id not in context:
+                    logger.warning(
+                        "Caught will_solve in state %s, but failed to capture its initialization",
+                        state.id,
+                    )
+                desc = context.setdefault(state.id, StateDescriptor(state_id=state.id))
+                desc._old_status = desc.status
+                desc.status = StateStatus.waiting_for_solver
+        except Exception as e:
+            print("Caught: ", e)
 
     def did_solve_callback(self, state, constraints, expr, solv_func, solutions):
-        with self.locked_context("manticore_state", dict) as context:
-            if state.id not in context:
-                logger.warning(
-                    "Caught did_solve in state %s, but failed to capture its initialization",
-                    state.id,
-                )
-            desc = context[state.id]
-            desc.status = desc._old_status
+        try:
+            with self.locked_context("manticore_state", dict) as context:
+                if state.id not in context:
+                    logger.warning(
+                        "Caught did_solve in state %s, but failed to capture its initialization",
+                        state.id,
+                    )
+                desc = context[state.id]
+                desc.status = desc._old_status
+        except Exception as e:
+            print("Caught: ", e)
 
     def on_execution_intermittent_callback(self, state, update_cb, *args, **kwargs):
         with self.locked_context("manticore_state", dict) as context:
