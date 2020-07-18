@@ -1799,7 +1799,7 @@ class ManticoreEVM(ManticoreBase):
                 for i in EVMAsm.disassemble_all(runtime_bytecode):
                     if (address, i.pc) in seen:
                         count += 1
-                        globalmanticore / ethereum / manticore.py_runtime_asm.write("*")
+                        global_runtime_asm.write("*")
                     else:
                         global_runtime_asm.write(" ")
 
@@ -1896,7 +1896,7 @@ class ManticoreEVM(ManticoreBase):
         """
         self.fix_unsound_all()
         _ready_states = self._ready_states
-        for state_id in _all_states:
+        for state_id in _ready_states:
             state = self._load(state_id)
             if self.fix_unsound_symbolication(state):
                 yield state
