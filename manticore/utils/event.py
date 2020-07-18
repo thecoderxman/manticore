@@ -149,7 +149,7 @@ class Eventful(object, metaclass=EventsGatherMetaclass):
             if can_raise:
                 raise
             else:
-                logger.info("Exception raised at a callback %r", e)
+                logger.error("Exception raised at a callback %r", e)
 
     # Separate from _publish since the recursive method call to forward an event
     # shouldn't check the event.
